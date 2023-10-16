@@ -1,3 +1,5 @@
+import com.expediagroup.graphql.plugin.gradle.config.GraphQLSerializer
+import com.expediagroup.graphql.plugin.gradle.graphql
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
@@ -14,9 +16,12 @@ plugins {
     alias(libs.plugins.detekt)
     // ktlint Plugin
     alias(libs.plugins.ktlint)
+    // GraphQL
+    alias(libs.plugins.graphql)
+    kotlin("plugin.serialization") version libs.versions.serialization.get()
 }
 
-group = "com.github.christopherosthues"
+group = "com.christopherosthues"
 version = "1.0.0"
 
 repositories {
@@ -31,6 +36,8 @@ dependencies {
     // (in a separate module for demo project and in testMain).
     // With compose.desktop.common you will also lose @Preview functionality
     implementation(compose.desktop.currentOs)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.graphql.client)
 
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter.core)
@@ -91,6 +98,31 @@ tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
         sarif.required = false
         txt.required = false
         xml.required = false
+    }
+}
+
+graphql {
+    client {
+        allowDeprecatedFields = false
+        endpoint = "https://gitlab.com/api/graphql"
+        packageName = "com.christopherosthues.starwarsprogressbarissuetracker.graphql"
+        queryFileDirectory = "${project.projectDir}/src/main/resources/graphql"
+        queryFiles =
+            listOf(
+                file("${project.projectDir}/src/main/resources/graphql/issues/IssueFragments.graphql"),
+                file("${project.projectDir}/src/main/resources/graphql/issues/CreateIssueMutation.graphql"),
+                file("${project.projectDir}/src/main/resources/graphql/issues/GetEditIssueQuery.graphql"),
+                file("${project.projectDir}/src/main/resources/graphql/issues/GetInitialIssuesQuery.graphql"),
+                file("${project.projectDir}/src/main/resources/graphql/issues/GetIssueQuery.graphql"),
+                file("${project.projectDir}/src/main/resources/graphql/issues/GetNextIssuesQuery.graphql"),
+                file("${project.projectDir}/src/main/resources/graphql/issues/GetProjectQuery.graphql"),
+                file("${project.projectDir}/src/main/resources/graphql/issues/UpdateIssueMutation.graphql"),
+            )
+        serializer = GraphQLSerializer.KOTLINX
+        timeout {
+            connect = 5_000
+            read = 15_000
+        }
     }
 }
 

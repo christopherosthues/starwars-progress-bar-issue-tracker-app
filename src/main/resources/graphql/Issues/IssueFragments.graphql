@@ -1,0 +1,65 @@
+fragment Issues on IssueConnection {
+    pageInfo {
+        endCursor,
+        hasNextPage,
+        hasPreviousPage
+    },
+    nodes {
+        ...Issue
+    }
+}
+
+fragment InitialIssues on IssueConnection {
+    count,
+    ...Issues
+}
+
+fragment Project on Project {
+    id,
+    labels {
+        nodes {
+            ...IssueLabel
+        }
+    },
+    milestones {
+        nodes {
+            ...IssueMilestone
+        }
+    },
+    releases: issues(sort: TITLE_ASC, search: "Release", in: [TITLE]){
+        nodes {
+            ...Release
+        }
+    }
+}
+
+fragment Issue on Issue {
+    projectId,
+    iid,
+    id,
+    title,
+    description,
+    webUrl,
+    state,
+    labels {
+        nodes {
+            ...IssueLabel
+        }
+    },
+    milestone {
+        ...IssueMilestone
+    }
+}
+
+fragment IssueMilestone on Milestone {
+    id,
+    iid,
+    title
+}
+
+fragment IssueLabel on Label {
+    id,
+    title,
+    color,
+    textColor
+}

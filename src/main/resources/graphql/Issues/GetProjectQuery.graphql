@@ -1,0 +1,47 @@
+query GetProject($project: ID!) {
+    project(fullPath: $project) {
+        ...Project
+    }
+}
+
+fragment Project on Project {
+    id,
+    labels {
+        nodes {
+            ...IssueLabel
+        }
+    },
+    milestones {
+        nodes {
+            ...IssueMilestone
+        }
+    },
+    releases: issues(sort: TITLE_ASC, search: "Release", in: [TITLE]){
+        nodes {
+            ...Release
+        }
+    }
+}
+
+fragment IssueMilestone on Milestone {
+    id,
+    iid,
+    title
+}
+
+fragment IssueLabel on Label {
+    id,
+    title,
+    color,
+    textColor
+}
+
+fragment Release on Issue {
+    id,
+    iid,
+    projectId,
+    title,
+    description,
+    state,
+    dueDate
+}

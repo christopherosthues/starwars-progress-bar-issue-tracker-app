@@ -1,0 +1,49 @@
+query GetNextIssues($project: ID!, $after: String!, $state: IssuableState) {
+    project(fullPath: $project) {
+        issues(after: $after, sort: TITLE_ASC, state: $state) {
+            ...Issues
+        }
+    }
+}
+
+fragment Issues on IssueConnection {
+    pageInfo {
+        endCursor,
+        hasNextPage,
+        hasPreviousPage
+    },
+    nodes {
+        ...Issue
+    }
+}
+
+fragment Issue on Issue {
+    projectId,
+    iid,
+    id,
+    title,
+    description,
+    webUrl,
+    state,
+    labels {
+        nodes {
+            ...IssueLabel
+        }
+    },
+    milestone {
+        ...IssueMilestone
+    }
+}
+
+fragment IssueMilestone on Milestone {
+    id,
+    iid,
+    title
+}
+
+fragment IssueLabel on Label {
+    id,
+    title,
+    color,
+    textColor
+}

@@ -1,0 +1,36 @@
+query GetIssue($id: IssueID!) {
+    issue(id: $id) {
+        ...Issue
+    }
+}
+
+fragment Issue on Issue {
+    projectId,
+    iid,
+    id,
+    title,
+    description,
+    webUrl,
+    state,
+    labels {
+        nodes {
+            ...IssueLabel
+        }
+    },
+    milestone {
+        ...IssueMilestone
+    }
+}
+
+fragment IssueMilestone on Milestone {
+    id,
+    iid,
+    title
+}
+
+fragment IssueLabel on Label {
+    id,
+    title,
+    color,
+    textColor
+}
