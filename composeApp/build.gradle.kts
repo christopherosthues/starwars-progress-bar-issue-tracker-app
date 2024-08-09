@@ -16,6 +16,7 @@ plugins {
     alias(libs.plugins.detekt)
     alias(libs.plugins.kover)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.apollographql)
 }
 
 kotlin {
@@ -71,6 +72,7 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(libs.apollographql.client)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
@@ -109,6 +111,12 @@ kover {
                 onCheck = true
             }
         }
+    }
+}
+
+apollo {
+    service("service") {
+        packageName.set("com.christopherosthues.starwarsprogressbarissuetracker.graphql")
     }
 }
 

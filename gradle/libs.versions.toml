@@ -10,6 +10,7 @@ androidx-core-ktx = "1.13.1"
 androidx-espresso-core = "3.6.1"
 androidx-material = "1.12.0"
 androidx-test-junit = "1.2.1"
+apollographql = "4.0.0"
 changelog = "2.2.1"
 compose-plugin = "1.6.11"
 detekt = "1.23.6"
@@ -30,10 +31,12 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 androidx-material = { group = "com.google.android.material", name = "material", version.ref = "androidx-material" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+apollographql-client = { group = "com.apollographql.apollo", name = "apollo-runtime", version.ref = "apollographql" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
+apollographql = { id = "com.apollographql.apollo", version.ref = "apollographql" }
 changelog = { id = "org.jetbrains.changelog", version.ref = "changelog" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
